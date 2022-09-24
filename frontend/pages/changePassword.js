@@ -1,6 +1,6 @@
 import { FaLock } from "react-icons/fa";
 
-export default function Home() {
+export default function ChangePassword() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-cyan-50">
       <main className="flex flex-col items-center justify-center w-full flex-1 px-50 text-center">
