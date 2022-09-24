@@ -39,6 +39,7 @@ export default function Home() {
                 
                 <a href="#" className='border-2 text-blue-900 border-blue-800 rounded-full px-12 py-2 inline-block font-semibold hover:bg-blue-900 hover:text-white'>LOGIN</a>
                 <a href="#" className='text-blue-900 my-3 font-base font-bold'>Need to create a new Account ? Register here !!</a>
+                <a href="changePassword" className='text-blue-900 my-3 font-base font-bold'>Do you want to change password ? Change here !!</a>
               </div>
             </div>
           </div>
