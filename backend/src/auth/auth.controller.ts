@@ -49,4 +49,10 @@ export class AuthController {
   ) {
     return await this.userService.changePassword(changePasswordDTO, user);
   }
+
+  @Get('profile')
+  @UseGuards(AuthGuard('jwt'))
+  async getProfile(@GetUser() user: User) {
+    return this.userService.sanitizeUser(user);
+  }
 }

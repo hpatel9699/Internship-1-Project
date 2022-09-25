@@ -62,7 +62,7 @@ export class UserService {
     if (!user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     }
-    if (await !bcrypt.compare(password, user.password)) {
+    if (!bcrypt.compare(password, user.password)) {
       throw new HttpException(
         'Invalid current Password',
         HttpStatus.BAD_REQUEST,
