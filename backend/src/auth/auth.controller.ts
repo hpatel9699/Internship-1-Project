@@ -42,6 +42,7 @@ export class AuthController {
   }
 
   @Post('change-password')
+  @UseGuards(AuthGuard('jwt'))
   async changePassword(
     @Body() changePasswordDTO: ChangePasswordDTO,
     @GetUser() user: Payload,
