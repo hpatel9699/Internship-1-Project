@@ -3,7 +3,10 @@ import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
 import { RegisterDTO } from 'src/user/register.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
-import { LoginDTO } from './login.dto';
+import { ChangePasswordDTO, LoginDTO } from './login.dto';
+import { GetUser } from '../../decorator/get-user.decorator';
+import { User } from 'src/types/user';
+import { Payload } from 'src/types/payload';
 
 @Controller('auth')
 export class AuthController {
@@ -36,5 +39,13 @@ export class AuthController {
     };
     const token = await this.authService.signPayload(payload);
     return { user, token };
+  }
+
+  @Post('change-password')
+  async changePassword(
+    @Body() changePasswordDTO: ChangePasswordDTO,
+    @GetUser() user: Payload,
+  ) {
+    return await this.userService.changePassword(changePasswordDTO, user);
   }
 }

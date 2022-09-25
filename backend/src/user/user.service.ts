@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { User } from 'src/types/user';
 import { RegisterDTO } from './register.dto';
 import * as bcrypt from 'bcrypt';
-import { LoginDTO } from 'src/auth/login.dto';
+import { ChangePasswordDTO, LoginDTO } from 'src/auth/login.dto';
 import { Payload } from 'src/types/payload';
 
 @Injectable()
@@ -47,5 +47,31 @@ export class UserService {
     const sanitized = user.toObject();
     delete sanitized['password'];
     return sanitized;
+  }
+
+  async changePassword(UserDTO: ChangePasswordDTO, payload: Payload) {
+    const { password, newPassword, confirmPassword } = UserDTO;
+    const user = await this.userModel.findOne({ email: payload.email });
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    }
+    if (await !bcrypt.compare(password, user.password)) {
+      throw new HttpException(
+        'Invalid current Password',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (newPassword !== confirmPassword) {
+      throw new HttpException(
+        'New password and confirm password does not match',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else {
+      user.password = newPassword;
+      await user.save();
+      return {
+        message: 'Password changed successfully',
+      };
+    }
   }
 }
