@@ -81,4 +81,18 @@ export class UserService {
       };
     }
   }
+
+  async updateProfile(user: User, userData: Partial<User>) {
+    const { email, name, phone, bio } = userData;
+    const findUser = await this.userModel.findOne({ email: user.email });
+    if (!findUser) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    }
+    findUser.email = email ? email : findUser.email;
+    findUser.name = name ? name : findUser.name;
+    findUser.phone = phone ? phone : findUser.phone;
+    findUser.bio = bio ? bio : findUser.bio;
+    await findUser.save();
+    return this.sanitizeUser(findUser);
+  }
 }
