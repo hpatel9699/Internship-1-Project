@@ -12,20 +12,27 @@ export class UserService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
   async create(RegisterDTO: RegisterDTO) {
-    const { email } = RegisterDTO;
+    const { email, password, phone, bio, name } = RegisterDTO;
     const user = await this.userModel.findOne({ email: email });
     if (user) {
       throw new HttpException(
-        'user already registered',
+        'user already registered !',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    const createdUser = new this.userModel(RegisterDTO);
+    const createdUser = new this.userModel();
+    createdUser.email = email;
+    createdUser.name = name;
+    createdUser.phone = phone;
+    createdUser.bio = bio;
+    createdUser.password = password;
 
+    console.log('Created User Here: ', createdUser);
     await createdUser.save();
     return this.sanitizeUser(createdUser);
   }
+
   async findByPayload(payload: Payload) {
     const { email } = payload;
     return await this.userModel.findOne({ email });
