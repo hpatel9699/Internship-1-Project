@@ -40,5 +40,6 @@ lerna-debug.log*
 
 #frontend
 /frontend/.next
+/frontend/node_modules
 /backend/node_modules
 /backend/dist
