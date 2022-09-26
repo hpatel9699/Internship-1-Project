@@ -6,4 +6,8 @@ export interface User extends Document {
   phone: string;
   bio: string;
   password: string;
+  facebook?: {
+    id: string;
+    avatar: string;
+  };
 }

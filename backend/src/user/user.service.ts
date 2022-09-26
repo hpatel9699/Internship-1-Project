@@ -38,6 +38,27 @@ export class UserService {
     return await this.userModel.findOne({ email });
   }
 
+  async findOrCreateFacebook(profile: any) {
+    const user = await this.userModel
+      .findOne({ 'facebook.id': profile.id })
+      .exec();
+    if (user) {
+      return user;
+    }
+    const createdUser = new this.userModel({
+      email: profile.emails[0].value,
+      name: profile.name.givenName + ' ' + profile.name.familyName,
+      Facebook: {
+        id: profile.id,
+        avatar: profile.photos[0].value,
+      },
+      password: 'Facebook' + profile.id,
+      phone: 'N/A',
+      bio: 'N/A',
+    });
+    return createdUser.save();
+  }
+
   async findByLogin(UserDTO: LoginDTO) {
     const { email, password } = UserDTO;
     const user = await this.userModel.findOne({ email: email });

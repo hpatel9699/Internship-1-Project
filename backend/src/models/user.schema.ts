@@ -7,6 +7,10 @@ export const UserSchema = new mongoose.Schema({
   phone: { type: String, required: false },
   name: { type: String, required: true },
   bio: { type: String, required: false },
+  facebook: {
+    id: { type: String, required: false },
+    avatar: { type: String, required: false },
+  },
 });
 
 UserSchema.pre('save', async function (next: any) {
