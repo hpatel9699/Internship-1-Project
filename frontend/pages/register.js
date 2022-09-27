@@ -2,8 +2,10 @@ import { FaGoogle, FaFacebookF, FaEnvelope, FaLock } from "react-icons/fa";
 import Image from "next/image";
 import { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function Register() {
+  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const registerAPIResponse = await axios({
@@ -20,6 +22,7 @@ export default function Register() {
     console.log("Submitted", registerAPIResponse);
     if (registerAPIResponse.status === 201) {
       alert("Registration Completed!");
+      router.push("/");
     } else {
       alert("Registration Failed!, Something went wrong");
     }
@@ -71,7 +74,7 @@ export default function Register() {
               <div className="bg-gray-100 w-72 p-3 flex items-center mb-3">
                 <FaEnvelope className="text-gray-400 mr-2" />
                 <input
-                  type="text"
+                  type="password"
                   name="Password"
                   placeholder="Enter Password"
                   onChange={(e) => setPassword(e.target.value)}
