@@ -46,7 +46,7 @@ export default function Home() {
               <div className="bg-blue-900 border-2 w-4 border-blue-900 inline-block mb-2"></div>
               <div className="flex justify-center my-2">
                 <a
-                  href="#"
+                  href="http://localhost:3000/auth/facebook"
                   className="border-2 border-gray-200 rounded-full p-3 mx-1"
                 >
                   <FaFacebookF className="text-l text-blue-600" />
