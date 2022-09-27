@@ -20,6 +20,8 @@ export default function Register() {
     console.log("Submitted", registerAPIResponse);
     if (registerAPIResponse.status === 201) {
       alert("Registration Completed!");
+    } else {
+      alert("Registration Failed!, Something went wrong");
     }
   };
 
@@ -37,6 +39,23 @@ export default function Register() {
             <h2 className="font-bold text-blue-900 mb-5 text-4xl">
               User Registration
             </h2>
+            <h4>
+              Already have an account?
+              <br />
+              <a href="/">
+                <button
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    outline: "none",
+                    cursor: "pointer",
+                    padding: "20",
+                  }}
+                >
+                  Login
+                </button>
+              </a>
+            </h4>
             <div className="bg-blue-900 border-2 w-4 border-blue-900 inline-block mb-2"></div>
             <div className="flex flex-col items-center">
               <div className="bg-gray-100 w-72 p-3 flex items-center mb-3">
