@@ -1,7 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import * as mongodb from 'mongodb';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/types/user';
+import { Task } from 'src/types/task';
 import { RegisterDTO } from './register.dto';
 import * as bcrypt from 'bcrypt';
 import { ChangePasswordDTO, LoginDTO } from 'src/auth/login.dto';
@@ -9,7 +11,10 @@ import { Payload } from 'src/types/payload';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private userModel: Model<User>) {}
+  constructor(
+    @InjectModel('User') private userModel: Model<User>,
+    @InjectModel('Task') private taskModel: Model<Task>,
+  ) {}
 
   async create(RegisterDTO: RegisterDTO) {
     const { email, password, phone, bio, name } = RegisterDTO;
@@ -115,5 +120,64 @@ export class UserService {
     findUser.bio = bio ? bio : findUser.bio;
     await findUser.save();
     return this.sanitizeUser(findUser);
+  }
+
+  async getTasks(user: User) {
+    const tasks = await this.taskModel.find({ user: user._id }).exec();
+    const taskData = tasks.map((task) => ({
+      task_id: task._id,
+      title: task.title,
+      completed: task.completed,
+      removed: task.removed,
+    }));
+    return taskData;
+  }
+
+  async createTask(task: Partial<Task>, user: User) {
+    const createdTask = new this.taskModel({
+      ...task,
+      userId: user._id,
+    });
+    await createdTask.save();
+    return createdTask;
+  }
+
+  async getActiveTasks(user: User) {
+    const tasks = await this.taskModel
+      .find({ userId: user._id, completed: false, removed: false })
+      .exec();
+    const taskData = tasks.map((task) => ({
+      task_id: task._id,
+      title: task.title,
+      completed: task.completed,
+      removed: task.removed,
+    }));
+    return taskData;
+  }
+
+  async completeTask(taskId: any, user: User) {
+    const trimmedTaskId = taskId.task_id.trim();
+    const task = await this.taskModel
+      .findOne({ _id: new mongodb.ObjectId(trimmedTaskId), userId: user._id })
+      .exec();
+    if (!task) {
+      throw new HttpException('Task not found', HttpStatus.BAD_REQUEST);
+    }
+    task.completed = true;
+    await task.save();
+    return task;
+  }
+
+  async deleteTask(taskId: any, user: User) {
+    const trimmedTaskId = taskId.task_id.trim();
+    const task = await this.taskModel
+      .findOne({ _id: new mongodb.ObjectId(trimmedTaskId), userId: user._id })
+      .exec();
+    if (!task) {
+      throw new HttpException('Task not found', HttpStatus.BAD_REQUEST);
+    }
+    task.removed = true;
+    await task.save();
+    return task;
   }
 }

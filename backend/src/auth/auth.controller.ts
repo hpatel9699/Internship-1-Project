@@ -7,6 +7,7 @@ import {
   UseGuards,
   Req,
   HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
 import { RegisterDTO } from 'src/user/register.dto';
@@ -16,6 +17,7 @@ import { ChangePasswordDTO, LoginDTO } from './login.dto';
 import { GetUser } from '../../decorator/get-user.decorator';
 import { User } from 'src/types/user';
 import { Payload } from 'src/types/payload';
+import { Task } from 'src/types/task';
 
 @Controller('auth')
 export class AuthController {
@@ -85,5 +87,37 @@ export class AuthController {
       data: req.user,
       request: req,
     };
+  }
+
+  @Get('/tasks')
+  @UseGuards(AuthGuard('jwt'))
+  async getTasks(@GetUser() user: User) {
+    return this.userService.getTasks(user);
+  }
+
+  @Get('/tasks-active')
+  @UseGuards(AuthGuard('jwt'))
+  async getActiveTasks(@GetUser() user: User) {
+    return this.userService.getActiveTasks(user);
+  }
+
+  @Post('/tasks')
+  @UseGuards(AuthGuard('jwt'))
+  async createTask(@Body() task: Partial<Task>, @GetUser() user: User) {
+    return this.userService.createTask(task, user);
+  }
+
+  // complete a task
+  @Patch('/tasks-complete')
+  @UseGuards(AuthGuard('jwt'))
+  async completeTask(@Body() task_id: any, @GetUser() user: User) {
+    return this.userService.completeTask(task_id, user);
+  }
+
+  // delete a task
+  @Delete('/tasks-delete')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteTask(@Body() task_id: any, @GetUser() user: User) {
+    return this.userService.deleteTask(task_id, user);
   }
 }
