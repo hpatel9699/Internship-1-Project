@@ -1,13 +1,12 @@
 import { FaLock } from "react-icons/fa";
 import { useRouter } from "next/router";
 
-
 export default function ChangePassword() {
   const router = useRouter();
-  const handleSubmit =()=>{
+  const handleSubmit = () => {
     alert("Password Changed !");
     router.push("/profilepage");
-  }
+  };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-cyan-50">
       <main className="flex flex-col items-center justify-center w-full flex-1 px-50 text-center">
@@ -40,7 +39,7 @@ export default function ChangePassword() {
 
                 <a
                   href="#"
-                  onClick={(e)=>handleSubmit()}
+                  onClick={(e) => handleSubmit()}
                   className="border-2 text-blue-900 border-blue-800 rounded-full px-12 py-2 inline-block font-semibold hover:bg-blue-900 hover:text-white"
                 >
                   SUBMIT

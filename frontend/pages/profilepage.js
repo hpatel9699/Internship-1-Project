@@ -46,17 +46,19 @@ export default function profilePage() {
             </h2>
             <div className="bg-blue-900 border-2 w-4 border-blue-900 inline-block mb-2"></div>
             <div className="flex flex-col items-center">
-             {image && <div className="bg-gray-100 w-72 p-3 flex items-center mb-3">
-                Image:-
-                {/* <FaEnvelope className="text-gray-400 mr-2" /> */}
-                <input
-                  type="text"
-                  name="profileImage"
-                  placeholder={image}
-                  className="bg-gray-100 outline-none text-base flex-2"
-                  readOnly={true}
-                />
-              </div>}
+              {image && (
+                <div className="bg-gray-100 w-72 p-3 flex items-center mb-3">
+                  Image:-
+                  {/* <FaEnvelope className="text-gray-400 mr-2" /> */}
+                  <input
+                    type="text"
+                    name="profileImage"
+                    placeholder={image}
+                    className="bg-gray-100 outline-none text-base flex-2"
+                    readOnly={true}
+                  />
+                </div>
+              )}
               <div className="bg-gray-100 w-72 p-3 flex items-center mb-3">
                 Bio:-
                 {/* <FaEnvelope className="text-gray-400 mr-2" /> */}
